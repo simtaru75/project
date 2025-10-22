@@ -44,6 +44,6 @@ setup(
     keywords="{{ project_name }} geonode django",
     url="https://github.com/{{ project_name }}/{{ project_name }}",
     packages=find_packages(),
-    dependency_links=["git+https://github.com/GeoNode/geonode.git#egg=geonode"],
+    dependency_links=["git+https://github.com/simtaru75/geonode.git#egg=geonode"],
     include_package_data=True,
 )

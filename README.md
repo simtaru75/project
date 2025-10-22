@@ -1,4 +1,4 @@
-# {{ project_simtaru|title }}
+# {{ simtaru_prj|title }}
 
 GeoNode template project. Generates a django project with GeoNode support.
 
@@ -18,26 +18,26 @@ GeoNode template project. Generates a django project with GeoNode support.
 ## Quick Docker Start
 
   ```bash
-    python3.10 -m venv ~/.venvs/project_simtaru
-    source ~/.venvs/{{ project_simtaru }}/bin/activate
+    python3.10 -m venv ~/.venvs/simtaru_prj
+    source ~/.venvs/{{ simtaru_prj }}/bin/activate
 
     pip install Django==4.2.9
 
-    mkdir ~/project_simtaru
+    mkdir ~/simtaru_prj
 
     GN_VERSION=master # Define the branch or tag you want to generate the project from
-    django-admin startproject --template=https://github.com/GeoNode/geonode-project/archive/refs/heads/$GN_VERSION.zip -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile project_simtaru ~/project_simtaru
+    django-admin startproject --template=https://github.com/simtaru75/simtaru-project/archive/refs/heads/$GN_VERSION.zip -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile simtaru_prj ~/simtaru_prj
 
-    cd ~/project_simtaru
+    cd ~/simtaru_prj
     python create-envfile.py 
   ```
 
 The project can also be generated from a local checkout of the goenode-project repository
 
 ```bash
-    git clone https://github.com/GeoNode/geonode-project
+    git clone https://github.com/simtaru75/simtaru-project
     git checkout $GN_VERSION
-    django-admin startproject --template=./geonode-project -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile project_simtaru ~/project_simtaru
+    django-admin startproject --template=./geonode-project -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile simtaru_prj ~/simtaru_prj
 
   ```
 
@@ -72,21 +72,21 @@ Available at
 
 ## Create a custom project
 
-**NOTE**: *You can call your geonode project whatever you like **except 'geonode'**. Follow the naming conventions for python packages (generally lower case with underscores (``_``). In the examples below, replace ``{{ project_simtaru }}`` with whatever you would like to name your project.*
+**NOTE**: *You can call your geonode project whatever you like **except 'geonode'**. Follow the naming conventions for python packages (generally lower case with underscores (``_``). In the examples below, replace ``{{ simtaru_prj }}`` with whatever you would like to name your project.*
 
 To setup your project follow these instructions:
 
 1. Generate the project
 
     ```bash
-    git clone https://github.com/GeoNode/geonode-project.git -b <your_branch>
+    git clone https://github.com/simtaru75/simtaru-project.git -b <your_branch>
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-    mkvirtualenv --python=/usr/bin/python3 {{ project_simtaru }}
+    mkvirtualenv --python=/usr/bin/python3 {{ simtaru_prj }}
     pip install Django==3.2.16
 
-    django-admin startproject --template=./geonode-project -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile {{ project_simtaru }}
+    django-admin startproject --template=./simtaru-project -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile {{ simtaru_prj }}
 
-    cd {{ project_simtaru }}
+    cd {{ simtaru_prj }}
     ```
 
 2. Create the .env file
@@ -117,7 +117,7 @@ To setup your project follow these instructions:
       Example USAGE
 
       ```bash
-      python create-envfile.py -f /opt/core/geonode-project/file.json \
+      python create-envfile.py -f /opt/core/simtaru-project/file.json \
         --hostname localhost \
         --https \
         --email random@email.com \
@@ -254,7 +254,7 @@ docker system prune -a
 ### Run a Backup
 
 ```bash
-SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_simtaru}}/br/backup.sh $BKP_FOLDER_NAME
+SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/backup.sh $BKP_FOLDER_NAME
 ```
 
 - BKP_FOLDER_NAME:
@@ -271,13 +271,13 @@ SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_simtaru}}/br/backup.sh
 e.g.:
 
 ```bash
-docker exec -it django4{{project_simtaru}} sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_simtaru}}/br/backup.sh $BKP_FOLDER_NAME'
+docker exec -it django4{{simtaru_prj}} sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/backup.sh $BKP_FOLDER_NAME'
 ```
 
 ### Run a Restore
 
 ```bash
-SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_simtaru}}/br/restore.sh $BKP_FOLDER_NAME
+SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/restore.sh $BKP_FOLDER_NAME
 ```
 
 - BKP_FOLDER_NAME:
@@ -294,7 +294,7 @@ SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_simtaru}}/br/restore.s
 e.g.:
 
 ```bash
-docker exec -it django4{{project_simtaru}} sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_simtaru}}/br/restore.sh $BKP_FOLDER_NAME'
+docker exec -it django4{{simtaru_prj}} sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/restore.sh $BKP_FOLDER_NAME'
 ```
 
 ## Recommended: Track your changes
