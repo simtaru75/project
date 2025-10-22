@@ -1,2 +1,2 @@
 ARG BASE_IMAGE_VERSION
-FROM geonode/postgis:${BASE_IMAGE_VERSION}
+FROM simtaru75/postgis:${BASE_IMAGE_VERSION}
