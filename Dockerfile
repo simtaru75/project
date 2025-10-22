@@ -1,4 +1,4 @@
-FROM geonode/geonode-base:latest-ubuntu-22.04
+FROM simtaru75/geonode-base:latest-ubuntu-22.04
 LABEL GeoNode development team
 
 RUN mkdir -p /usr/src/{{project_name}}
@@ -32,7 +32,7 @@ COPY src/celery-cmd /usr/bin/celery-cmd
 RUN chmod +x /usr/bin/celery-cmd
 
 # Install "geonode-contribs" apps
-# RUN cd /usr/src; git clone https://github.com/GeoNode/geonode-contribs.git -b master
+# RUN cd /usr/src; git clone https://github.com/simtaru75/geonode-contribs.git -b master
 # Install logstash and centralized dashboard dependencies
 # RUN cd /usr/src/geonode-contribs/geonode-logstash; pip install --upgrade  -e . \
 #     cd /usr/src/geonode-contribs/ldap; pip install --upgrade  -e .
