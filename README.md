@@ -1,4 +1,4 @@
-# {{ simtaru_prj|title }}
+# {{ project_name|title }}
 
 GeoNode template project. Generates a django project with GeoNode support.
 
@@ -18,29 +18,19 @@ GeoNode template project. Generates a django project with GeoNode support.
 ## Quick Docker Start
 
   ```bash
-    python3.10 -m venv ~/.venvs/simtaru_prj
-    source ~/.venvs/{{ simtaru_prj }}/bin/activate
+    python3.10 -m venv ~/.venvs/project_name
+    source ~/.venvs/{{ project_name }}/bin/activate
 
     pip install Django==4.2.9
 
-    mkdir ~/simtaru_prj
+    mkdir ~/project_name
 
     GN_VERSION=master # Define the branch or tag you want to generate the project from
-    django-admin startproject --template=https://github.com/simtaru75/simtaru-project/archive/refs/heads/$GN_VERSION.zip -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile simtaru_prj ~/simtaru_prj
+    django-admin startproject --template=https://github.com/simtaru75/simtaru-project/archive/refs/tags/$GN_VERSION.zip -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile project_name ~/project_name
 
-    cd ~/simtaru_prj
+    cd ~/project_name
     python create-envfile.py 
   ```
-
-The project can also be generated from a local checkout of the goenode-project repository
-
-```bash
-    git clone https://github.com/simtaru75/simtaru-project
-    git checkout $GN_VERSION
-    django-admin startproject --template=./geonode-project -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile simtaru_prj ~/simtaru_prj
-
-  ```
-
 `create-envfile.py` accepts the following arguments:
 
 - `--https`: Enable SSL. It's disabled by default
@@ -72,7 +62,7 @@ Available at
 
 ## Create a custom project
 
-**NOTE**: *You can call your geonode project whatever you like **except 'geonode'**. Follow the naming conventions for python packages (generally lower case with underscores (``_``). In the examples below, replace ``{{ simtaru_prj }}`` with whatever you would like to name your project.*
+**NOTE**: *You can call your geonode project whatever you like **except 'geonode'**. Follow the naming conventions for python packages (generally lower case with underscores (``_``). In the examples below, replace ``{{ project_name }}`` with whatever you would like to name your project.*
 
 To setup your project follow these instructions:
 
@@ -81,12 +71,12 @@ To setup your project follow these instructions:
     ```bash
     git clone https://github.com/simtaru75/simtaru-project.git -b <your_branch>
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-    mkvirtualenv --python=/usr/bin/python3 {{ simtaru_prj }}
+    mkvirtualenv --python=/usr/bin/python3 {{ project_name }}
     pip install Django==3.2.16
 
-    django-admin startproject --template=./simtaru-project -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile {{ simtaru_prj }}
+    django-admin startproject --template=./simtaru-project -e py,sh,md,rst,json,yml,ini,env,sample,properties -n monitoring-cron -n Dockerfile {{ project_name }}
 
-    cd {{ simtaru_prj }}
+    cd {{ project_name }}
     ```
 
 2. Create the .env file
@@ -254,7 +244,7 @@ docker system prune -a
 ### Run a Backup
 
 ```bash
-SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/backup.sh $BKP_FOLDER_NAME
+SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_name}}/br/backup.sh $BKP_FOLDER_NAME
 ```
 
 - BKP_FOLDER_NAME:
@@ -271,13 +261,13 @@ SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/backup.sh $BK
 e.g.:
 
 ```bash
-docker exec -it django4{{simtaru_prj}} sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/backup.sh $BKP_FOLDER_NAME'
+docker exec -it django4{{project_name}} sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_name}}/br/backup.sh $BKP_FOLDER_NAME'
 ```
 
 ### Run a Restore
 
 ```bash
-SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/restore.sh $BKP_FOLDER_NAME
+SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_name}}/br/restore.sh $BKP_FOLDER_NAME
 ```
 
 - BKP_FOLDER_NAME:
@@ -294,7 +284,7 @@ SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/restore.sh $B
 e.g.:
 
 ```bash
-docker exec -it django4{{simtaru_prj}} sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{simtaru_prj}}/br/restore.sh $BKP_FOLDER_NAME'
+docker exec -it django4{{project_name}} sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./{{project_name}}/br/restore.sh $BKP_FOLDER_NAME'
 ```
 
 ## Recommended: Track your changes
@@ -330,4 +320,72 @@ POSTGRESQL_MAX_CONNECTIONS=200
 ```
 
 In this case PostgreSQL will run accepting 200 maximum connections.
+
+## Test project generation and docker-compose build Vagrant usage
+
+Testing with [vagrant](https://www.vagrantup.com/docs) works like this:
+What vagrant does:
+
+Starts a vm for test on docker swarm:
+    - configures a GeoNode project from template every time from your working directory (so you can develop directly on simtaru-project).
+    - exposes service on localhost port 8888
+    - rebuilds everytime everything with cache [1] to avoid banning from docker hub with no login.
+    - starts, reboots to check if docker services come up correctly after reboot.
+
+```bash
+vagrant plugin install vagrant-reload
+#test things for docker-compose
+vagrant up
+# check services are up upon reboot
+vagrant ssh geonode-compose -c 'docker ps'
+```
+
+Test geonode on [http://localhost:8888/](http://localhost:8888/)
+
+To clean up things and delete the vagrant box:
+
+```bash
+vagrant destroy -f
+```
+
+## Test project generation and Docker swarm build on vagrant
+
+What vagrant does:
+
+Starts a vm for test on docker swarm:
+    - configures a GeoNode project from template every time from your working directory (so you can develop directly on geonode-project).
+    - exposes service on localhost port 8888
+    - rebuilds everytime everything with cache [1] to avoid banning from docker hub with no login.
+    - starts, reboots to check if docker services come up correctly after reboot.
+
+To test on a docker swarm enable vagrant box:
+
+```bash
+vagrant up
+VAGRANT_VAGRANTFILE=Vagrantfile.stack vagrant up
+# check services are up upon reboot
+VAGRANT_VAGRANTFILE=Vagrantfile.stack vagrant ssh geonode-compose -c 'docker service ls'
+```
+
+Test geonode on [http://localhost:8888/](http://localhost:8888/)
+Again, to clean up things and delete the vagrant box:
+
+```bash
+VAGRANT_VAGRANTFILE=Vagrantfile.stack vagrant destroy -f
+```
+
+for direct deveolpment on geonode-project after first `vagrant up` to rebuild after changes to project, you can do `vagrant reload` like this:
+
+```bash
+vagrant up
+```
+
+What vagrant does (swarm or comnpose cases):
+
+Starts a vm for test on plain docker service with docker-compose:
+    - configures a GeoNode project from template every time from your working directory (so you can develop directly on geonode-project).
+    - rebuilds everytime everything with cache [1] to avoid banning from docker hub with no login.
+    - starts, reboots.
+
+[1] to achieve `docker-compose build --no-cache` just destroy vagrant boxes `vagrant destroy -f`
 

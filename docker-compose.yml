@@ -77,7 +77,7 @@ services:
     image: memcached:alpine
     container_name: memcached4${COMPOSE_PROJECT_NAME}
     command: memcached ${MEMCACHED_OPTIONS}
-    restart: unless-stopped
+    restart: on-failure
     healthcheck:
       test: nc -z 127.0.0.1 11211
       interval: 30s
@@ -169,12 +169,12 @@ services:
     #ports:
     #  - "5432:5432"
 
-  # Vanilla Redis service. This is needed by celery
-  redis:
-    image: redis:7-alpine
-    container_name: redis4${COMPOSE_PROJECT_NAME}
+  # Vanilla RabbitMQ service. This is needed by celery
+  rabbitmq:
+    image: rabbitmq:3-alpine
+    container_name: rabbitmq4${COMPOSE_PROJECT_NAME}
     volumes:
-      - redisdata:/data
+      - rabbitmq:/var/lib/rabbitmq
     restart: unless-stopped
 
 volumes:
@@ -196,5 +196,5 @@ volumes:
     name: ${COMPOSE_PROJECT_NAME}-data
   tmp:
     name: ${COMPOSE_PROJECT_NAME}-tmp
-  redisdata:
-    name: ${COMPOSE_PROJECT_NAME}-redisdata
+  rabbitmq:
+    name: ${COMPOSE_PROJECT_NAME}-rabbitmq
