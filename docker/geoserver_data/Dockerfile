@@ -1,2 +1,2 @@
 ARG BASE_IMAGE_VERSION
-FROM simtaru75/geoserver_data:${BASE_IMAGE_VERSION}
+FROM simtaru75/geodata:${BASE_IMAGE_VERSION}
